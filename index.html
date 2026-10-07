@@ -1,1 +1,408 @@
-<!DOCTYPE html><html><head><meta http-equiv="refresh" content="0;url=https://hermes5.pages.dev/"></head><body>Redirecting to live dashboard...</body></html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hermes Task Dashboard</title>
+<style>
+    * { box-sizing: border-box; }
+    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #111; color: #eee; padding: 0; margin: 0; }
+    .container { max-width: 1400px; margin: 0 auto; padding: 1.5rem; }
+    h1 { border-bottom: 2px solid #444; padding-bottom: 0.8rem; margin-top: 0; }
+    .summary { display: flex; gap: 2rem; margin-bottom: 1.5rem; color: #aaa; font-size: 0.9em; flex-wrap: wrap; align-items: center; }
+    
+    /* Filter buttons */
+    .filters { margin-bottom: 1.5rem; display: flex; gap: 0.8rem; flex-wrap: wrap; }
+    .filter-btn { 
+        padding: 0.5rem 1.2rem; border: 1px solid #444; background: #222; color: #ccc; 
+        cursor: pointer; border-radius: 6px; font-size: 0.85em; transition: all 0.2s;
+    }
+    .filter-btn:hover { background: #333; }
+    .filter-btn.active { background: #7aa2f7; color: #fff; border-color: #7aa2f7; }
+    .filter-btn .count { opacity: 0.6; margin-left: 0.5rem; font-size: 0.8em; }
+    
+    table { width: 100%; border-collapse: collapse; }
+    th { text-align: left; padding: 12px; background: #222; border-bottom: 2px solid #444; color: #888; font-weight: 600; position: sticky; top: 0; }
+    td { padding: 12px; border-bottom: 1px solid #222; vertical-align: top; }
+    tr:hover { background: #1a1a1a; }
+    tr.hidden { display: none; }
+    
+    .cat-pc { color: #7aa2f7; font-weight: bold; }
+    .cat-home { color: #9ece6a; font-weight: bold; }
+    .cat-handyman { color: #e0af68; font-weight: bold; }
+    .cat-travel { color: #bb9af7; font-weight: bold; }
+    .cat-uncategorized { color: #888; }
+    .overdue { color: #f7768e; font-weight: bold; }
+    .due { font-family: monospace; color: #ff9e64; white-space: nowrap; }
+    .status-badge { 
+        display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 0.75em; 
+        margin-left: 8px; font-weight: normal; 
+    }
+    .badge-overdue { background: rgba(247,118,142,0.2); color: #f7768e; }
+    
+    @media (max-width: 768px) {
+        .summary { flex-direction: column; gap: 0.5rem; }
+        table { font-size: 0.9em; }
+        td, th { padding: 8px 6px; }
+    }
+</style>
+</head>
+<body>
+<div class="container">
+<h1>📋 Task Dashboard <span style="font-size:0.6em; color:#888;">Live View</span></h1>
+<div class="summary">
+    <div>Total Open: <strong>51</strong></div>
+    <div><span style="color:#9ece6a;">●</span> Last updated: Just now</div>
+    <div style="cursor:pointer; color:#7aa2f7;" onclick="location.href='tasks.html?' + Date.now()">Force Refresh ↻</div>
+</div>
+
+<!-- Category Filters -->
+<div class="filters" id="filters">
+    <button class="filter-btn active" data-catkey="all">All<span class="count">51</span></button>
+<button class="filter-btn" data-catkey="handyman">Handyman<span class="count">5</span></button>
+<button class="filter-btn" data-catkey="home">Home<span class="count">10</span></button>
+<button class="filter-btn" data-catkey="pc">PC<span class="count">18</span></button>
+<button class="filter-btn" data-catkey="phone">Phone<span class="count">18</span></button>
+
+</div>
+
+<table>
+<thead><tr><th>#</th><th>Category</th><th>Due Date</th><th>Title</th></tr></thead>
+<tbody id="task-body">
+<tr data-catkey="pc">
+<td>1</td>
+<td><span class='cat-pc'>PC</span></td>
+<td class="due">-</td>
+<td>Set up Hermes bot screen: its own computer + browser that Hermes controls on the VPS </td>
+</tr>
+<tr data-catkey="pc">
+<td>2</td>
+<td><span class='cat-pc'>PC</span></td>
+<td class="due">-</td>
+<td>Set up Hermes bot profiles with one Chief of Staff that delegates to the specialist bots </td>
+</tr>
+<tr data-catkey="pc">
+<td>3</td>
+<td><span class='cat-pc'>PC</span></td>
+<td class="due">-</td>
+<td>Use GitHub real estate walkable viewing to sell pelangi indah https://hermes-1665294-807.cloudwaysagents.com:9307/session/34972a82854b?source=pwa </td>
+</tr>
+<tr data-catkey="pc">
+<td>4</td>
+<td><span class='cat-pc'>PC</span></td>
+<td class="due">-</td>
+<td>Start building a LinkedIn influence </td>
+</tr>
+<tr data-catkey="pc">
+<td>5</td>
+<td><span class='cat-pc'>PC</span></td>
+<td class="due">-</td>
+<td>use farcap file to create networth tracker </td>
+</tr>
+<tr data-catkey="pc">
+<td>6</td>
+<td><span class='cat-pc'>PC</span></td>
+<td class="due">-</td>
+<td>Ask Hermes to search GitHub for settings to maximize Hermes </td>
+</tr>
+<tr data-catkey="phone">
+<td>7</td>
+<td><span class='cat-phone'>Phone</span></td>
+<td class="due">-</td>
+<td>HiNotes: auto-transcribe and summarize voice notes into Hermes </td>
+</tr>
+<tr data-catkey="pc">
+<td>8</td>
+<td><span class='cat-pc'>PC</span></td>
+<td class="due">-</td>
+<td>Check yati diabetic with Kak ina </td>
+</tr>
+<tr data-catkey="phone">
+<td>9</td>
+<td><span class='cat-phone'>Phone</span></td>
+<td class="due">-</td>
+<td>Queryable engineering knowledge base (MI/RBI) </td>
+</tr>
+<tr data-catkey="pc">
+<td>10</td>
+<td><span class='cat-pc'>PC</span></td>
+<td class="due">-</td>
+<td>Tow Peugeot to workshop to fix. Need to renew road tax and insurance after it's fixed </td>
+</tr>
+<tr data-catkey="phone">
+<td>11</td>
+<td><span class='cat-phone'>Phone</span></td>
+<td class="due">-</td>
+<td>Research agent for tech and investments </td>
+</tr>
+<tr data-catkey="pc">
+<td>12</td>
+<td><span class='cat-pc'>PC</span></td>
+<td class="due">-</td>
+<td>change aziz ic address to penchala from keramat </td>
+</tr>
+<tr data-catkey="home">
+<td>13</td>
+<td><span class='cat-home'>Home</span></td>
+<td class="due">-</td>
+<td>Dentist for kids </td>
+</tr>
+<tr data-catkey="phone">
+<td>14</td>
+<td><span class='cat-phone'>Phone</span></td>
+<td class="due">-</td>
+<td>Automate uploads to Cloudways server for Hermes to process </td>
+</tr>
+<tr data-catkey="phone">
+<td>15</td>
+<td><span class='cat-phone'>Phone</span></td>
+<td class="due">-</td>
+<td>Simple free webpage on server to view prioritized tasks (no Cloudflare) </td>
+</tr>
+<tr data-catkey="pc">
+<td>16</td>
+<td><span class='cat-pc'>PC</span></td>
+<td class="due">-</td>
+<td>List down all the air conditioner last service day and you know plan one trip once a year next time for the service </td>
+</tr>
+<tr data-catkey="phone">
+<td>17</td>
+<td><span class='cat-phone'>Phone</span></td>
+<td class="due">-</td>
+<td>Family debts & assets - map 700k / 50k / Kuantan into one page </td>
+</tr>
+<tr data-catkey="pc">
+<td>18</td>
+<td><span class='cat-pc'>PC</span></td>
+<td class="due">-</td>
+<td>Jev github: use on yahoo and whatsapp triage </td>
+</tr>
+<tr data-catkey="phone">
+<td>19</td>
+<td><span class='cat-phone'>Phone</span></td>
+<td class="due">-</td>
+<td>Export Hermes outputs to Google Docs </td>
+</tr>
+<tr data-catkey="pc">
+<td>20</td>
+<td><span class='cat-pc'>PC</span></td>
+<td class="due">-</td>
+<td>Get AI to look through everything in my Google Keep and extract what's useful and latest personal information that I can add to my personal file so I can add to my hermes ai agent </td>
+</tr>
+<tr data-catkey="pc">
+<td>21</td>
+<td><span class='cat-pc'>PC</span></td>
+<td class="due">-</td>
+<td>Add personal file and notebook from gemini as reference in personal bot in Hermes using free model like nemotron 3.5 lightning </td>
+</tr>
+<tr data-catkey="phone">
+<td>22</td>
+<td><span class='cat-phone'>Phone</span></td>
+<td class="due">-</td>
+<td>Check if Hermes AI agent has persistent memory when given a personal file </td>
+</tr>
+<tr data-catkey="home">
+<td>23</td>
+<td><span class='cat-home'>Home</span></td>
+<td class="due">2026-12-10</td>
+<td>[YATI] Book flight KUL -> Medan (KNO) return, night of 23 Dec 2026 -> 1 or 2 Jan 2027, cheapest RM645 (Batik Air) </td>
+</tr>
+<tr data-catkey="pc">
+<td>24</td>
+<td><span class='cat-pc'>PC</span></td>
+<td class="due">-</td>
+<td>GitHub Hermes jev skill https://x.com/ArchiveExplorer/status/2105374120871698625 </td>
+</tr>
+<tr data-catkey="pc">
+<td>25</td>
+<td><span class='cat-pc'>PC</span></td>
+<td class="due">-</td>
+<td>Check key things to do from </td>
+</tr>
+<tr data-catkey="phone">
+<td>26</td>
+<td><span class='cat-phone'>Phone</span></td>
+<td class="due">-</td>
+<td>to move from Yahoo to Google email https://g.co/gemini/share/9cc7ca78e178 </td>
+</tr>
+<tr data-catkey="phone">
+<td>27</td>
+<td><span class='cat-phone'>Phone</span></td>
+<td class="due">-</td>
+<td>Family travel assistant </td>
+</tr>
+<tr data-catkey="home">
+<td>28</td>
+<td><span class='cat-home'>Home</span></td>
+<td class="due">-</td>
+<td>Install touch and go ewallet yati's phone with passport </td>
+</tr>
+<tr data-catkey="handyman">
+<td>29</td>
+<td><span class='cat-handyman'>Handyman</span></td>
+<td class="due">-</td>
+<td>Change master aircond to WiFi switch </td>
+</tr>
+<tr data-catkey="handyman">
+<td>30</td>
+<td><span class='cat-handyman'>Handyman</span></td>
+<td class="due">-</td>
+<td>fix the boys toilet sprayer </td>
+</tr>
+<tr data-catkey="home">
+<td>31</td>
+<td><span class='cat-home'>Home</span></td>
+<td class="due">-</td>
+<td>Defrost the Small Freezer (Highest ROI — ~5-10% savings </td>
+</tr>
+<tr data-catkey="home">
+<td>32</td>
+<td><span class='cat-home'>Home</span></td>
+<td class="due">-</td>
+<td>old phone screen repair for Aziz </td>
+</tr>
+<tr data-catkey="home">
+<td>33</td>
+<td><span class='cat-home'>Home</span></td>
+<td class="due">-</td>
+<td>test task cron </td>
+</tr>
+<tr data-catkey="handyman">
+<td>34</td>
+<td><span class='cat-handyman'>Handyman</span></td>
+<td class="due">-</td>
+<td>test3 </td>
+</tr>
+<tr data-catkey="handyman">
+<td>35</td>
+<td><span class='cat-handyman'>Handyman</span></td>
+<td class="due">-</td>
+<td>test2 </td>
+</tr>
+<tr data-catkey="handyman">
+<td>36</td>
+<td><span class='cat-handyman'>Handyman</span></td>
+<td class="due">2026-10-07</td>
+<td>pipe burse. fix today! </td>
+</tr>
+<tr data-catkey="pc">
+<td>37</td>
+<td><span class='cat-pc'>PC</span></td>
+<td class="due">-</td>
+<td>[PROPOSED] Patch google-workspace setup.py SCOPES to add auth/tasks (stops token clobber killing the task pipeline) </td>
+</tr>
+<tr data-catkey="pc">
+<td>38</td>
+<td><span class='cat-pc'>PC</span></td>
+<td class="due">-</td>
+<td>Fix Bluetooth of laptop </td>
+</tr>
+<tr data-catkey="pc">
+<td>39</td>
+<td><span class='cat-pc'>PC</span></td>
+<td class="due">-</td>
+<td>Finalize soul.md and copy to Copilot </td>
+</tr>
+<tr data-catkey="phone">
+<td>40</td>
+<td><span class='cat-phone'>Phone</span></td>
+<td class="due">-</td>
+<td>hermes desktop to autorun without cloudways password </td>
+</tr>
+<tr data-catkey="phone">
+<td>41</td>
+<td><span class='cat-phone'>Phone</span></td>
+<td class="due">-</td>
+<td>Look for a GitHub to clean up your Hermes skill setup </td>
+</tr>
+<tr data-catkey="phone">
+<td>42</td>
+<td><span class='cat-phone'>Phone</span></td>
+<td class="due">-</td>
+<td>hermes desktop to start without password </td>
+</tr>
+<tr data-catkey="phone">
+<td>43</td>
+<td><span class='cat-phone'>Phone</span></td>
+<td class="due">-</td>
+<td>[AUTOMATED] Daily — monitor car promos, bills, emails & research </td>
+</tr>
+<tr data-catkey="phone">
+<td>44</td>
+<td><span class='cat-phone'>Phone</span></td>
+<td class="due">-</td>
+<td>[AUTOMATED] Weekly — strategic task review + automation scout </td>
+</tr>
+<tr data-catkey="phone">
+<td>45</td>
+<td><span class='cat-phone'>Phone</span></td>
+<td class="due">-</td>
+<td>[AUTOMATED] Always include ≥1 automation opportunity per output </td>
+</tr>
+<tr data-catkey="phone">
+<td>46</td>
+<td><span class='cat-phone'>Phone</span></td>
+<td class="due">-</td>
+<td>Fix Yahoo IMAP 'LOGIN Server error' - emailbot triage is failing intermittently </td>
+</tr>
+<tr data-catkey="phone">
+<td>47</td>
+<td><span class='cat-phone'>Phone</span></td>
+<td class="due">-</td>
+<td>Check use case to create Shell Copilot Studio Lite agent </td>
+</tr>
+<tr data-catkey="home">
+<td>48</td>
+<td><span class='cat-home'>Home</span></td>
+<td class="due">-</td>
+<td>give his iPad to alana </td>
+</tr>
+<tr data-catkey="home">
+<td>49</td>
+<td><span class='cat-home'>Home</span></td>
+<td class="due">-</td>
+<td>add shortcut to azman mandarin zoom in ipad </td>
+</tr>
+<tr data-catkey="home">
+<td>50</td>
+<td><span class='cat-home'>Home</span></td>
+<td class="due">-</td>
+<td>Fix the painting of my XPENG G6 </td>
+</tr>
+<tr data-catkey="home">
+<td>51</td>
+<td><span class='cat-home'>Home</span></td>
+<td class="due">-</td>
+<td>Test drive Proton e.MAS 7 PHEV, Chery Tiggo 7 PHEV, Jaecoo J7 PHEV  19:12 for syg </td>
+</tr>
+</tbody></table></div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const filterBtns = document.querySelectorAll('.filter-btn');
+    const rows = document.querySelectorAll('#task-body tr');
+    
+    // Show all rows initially
+    rows.forEach(row => row.classList.remove('hidden'));
+    
+    filterBtns.forEach(btn => {
+        btn.addEventListener('click', function() {
+            const filterKey = this.getAttribute('data-catkey');
+            
+            // Update active button
+            filterBtns.forEach(b => b.classList.remove('active'));
+            this.classList.add('active');
+            
+            // Show/hide rows based on filter
+            rows.forEach(row => {
+                if (filterKey === 'all' || row.getAttribute('data-catkey') === filterKey) {
+                    row.classList.remove('hidden');
+                } else {
+                    row.classList.add('hidden');
+                }
+            });
+        });
+    });
+});
+</script>
+</body></html>
